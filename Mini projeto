@@ -1,0 +1,41 @@
+# para o Gabriel
+import PySimpleGUI as sg
+
+sg.theme('LightBrown11')  # Tema
+
+# Deslocamento
+def calculo_do_deslocamento(posicao_ini, velocidade, inter_temp  ):
+    posicao = posicao_ini + velocidade * inter_temp
+    return posicao
+
+
+# Layout do programa
+layout = [
+    [sg.Text("Função horário do deslocamento", font=("Helvetica", 12))],
+    [sg.Text("posição inicial:", size=(9, 1)), sg.InputText(key="posicao_ini")],
+    [sg.Text("velocidade:", size=(9, 1)), sg.InputText(key="velocidade")],
+  [sg.Text("tempo:", size=(9, 1)), sg.InputText(key="inter_temp")],
+    [sg.Button("Calcular"), sg.Button("Sair")],
+    [sg.Text("Deslocamento: ", size=(22, 1)), sg.Text("", size=(14, 1), key="resultado")]
+    ]
+
+
+window = sg.Window('Segunda lei de Newton', layout)
+while True:
+    evento, valores = window.read()
+
+    if evento == sg.WINDOW_CLOSED or evento == "Sair":
+        break
+
+    if evento == "Calcular":
+        try:
+           posicao_ini = float(valores["posicao_ini"])#fala pro programa que o text é o mesmo do calculo
+          velocidade = float(valores["velocidade"])
+          tempo = float(valores["inter_temp"])
+          posicao = calculo_do_deslocamento(posicao_ini, velocidade, inter_temp)
+          window["resultado"].update(f"{posicao:.1f} N")
+          sg.popup("O resultado é", f"{posicao:.1f}N")
+        except ValueError:
+           sg.popup_error("Digite valores numéricos válidos.")
+
+window.close()
